@@ -22,15 +22,19 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
 
 public class UserLogin extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JTextField textField;
     private JPasswordField passwordField;
-    private JButton btnNewButton;
-    private JLabel label;
+    private JButton LoginButton;
     private JPanel contentPane;
+    Connection con;
+    PreparedStatement pst;
+    ResultSet rs;
+    private JPanel panel;
 
     /**
      * Launch the application.
@@ -48,110 +52,107 @@ public class UserLogin extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     */
+
+	
     public UserLogin() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(450, 190, 1014, 597);
+        setBounds(100, 100, 450, 300);
+        setLocationRelativeTo(null);
         setResizable(false);
         contentPane = new JPanel();
+        contentPane.setBackground(new Color(26, 66, 116));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
         JLabel lblNewLabel = new JLabel("Login");
-        lblNewLabel.setForeground(Color.BLACK);
-        lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 46));
-        lblNewLabel.setBounds(423, 13, 273, 93);
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setForeground(new Color(254, 255, 255));
+        lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
+        lblNewLabel.setBounds(158, 24, 134, 37);
         contentPane.add(lblNewLabel);
 
         textField = new JTextField();
-        textField.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        textField.setBounds(481, 170, 281, 68);
+        textField.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        textField.setBounds(178, 102, 185, 37);
         contentPane.add(textField);
         textField.setColumns(10);
 
         passwordField = new JPasswordField();
-        passwordField.setFont(new Font("Tahoma", Font.PLAIN, 32));
-        passwordField.setBounds(481, 286, 281, 68);
+        passwordField.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        passwordField.setBounds(178, 161, 185, 30);
         contentPane.add(passwordField);
 
         JLabel lblUsername = new JLabel("Username");
         lblUsername.setBackground(Color.BLACK);
-        lblUsername.setForeground(Color.BLACK);
-        lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 31));
-        lblUsername.setBounds(250, 166, 193, 52);
+        lblUsername.setForeground(new Color(254, 255, 255));
+        lblUsername.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
+        lblUsername.setBounds(78, 102, 98, 16);
         contentPane.add(lblUsername);
 
         JLabel lblPassword = new JLabel("Password");
-        lblPassword.setForeground(Color.BLACK);
+        lblPassword.setForeground(new Color(254, 255, 255));
         lblPassword.setBackground(Color.CYAN);
-        lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 31));
-        lblPassword.setBounds(250, 286, 193, 52);
+        lblPassword.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
+        lblPassword.setBounds(78, 164, 98, 16);
         contentPane.add(lblPassword);
-
-        btnNewButton = new JButton("Login");
-        btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 26));
-        btnNewButton.setBounds(545, 392, 162, 73);
-        btnNewButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                String userName = textField.getText();
-                String password = passwordField.getText();
-//                try {
-//                   Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/swing_demo",
-//                        "root", "root");
-//
-//                    PreparedStatement st = (PreparedStatement) connection
-//                        .prepareStatement("Select name, password from student where name=? and password=?");
-//
-//                    st.setString(1, userName);
-//                    st.setString(2, password);
-//                    ResultSet rs = st.executeQuery();
-//                    if (rs.next()) {
-//                        dispose();
-//                        UserHome ah = new UserHome(userName);
-//                        ah.setTitle("Welcome");
-//                        ah.setVisible(true);
-//                        JOptionPane.showMessageDialog(btnNewButton, "You have successfully logged in");
-//                    } else {
-//                        JOptionPane.showMessageDialog(btnNewButton, "Wrong Username & Password");
-//                    }
-//                } catch (SQLException sqlException) {
-//                    sqlException.printStackTrace();
-//                }
-                
-                //delete this
-                dispose();
-                UserHome ah = new UserHome();
-                ah.setTitle("Welcome");
-              	ah.setVisible(true);
-            }
-        });
         
-        contentPane.add(btnNewButton);
 
-        label = new JLabel("");
-        label.setBounds(0, 0, 1008, 562);
-        contentPane.add(label);
+        LoginButton = new JButton("Login");
+        LoginButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        LoginButton.setBounds(178, 215, 106, 30);
+        
+        LoginButton.addActionListener(new ActionListener() {
+	        Connection con;
+	        PreparedStatement pst;
+	        ResultSet rs;
+        	       	 
+        	
+	       public void actionPerformed(ActionEvent e) {
+	                String userName = textField.getText();
+	                String password = passwordField.getText();
+	                
+	                try {
+	                	Class.forName("com.mysql.cj.jdbc.Driver");
+			            con = DriverManager.getConnection("jdbc:mysql://localhost/finance_manager", "root","");
+	                }
+	                catch (ClassNotFoundException ex)
+	                {
+	                  ex.printStackTrace();
+	                }
+	                catch (SQLException ex)
+	                {
+	                    ex.printStackTrace();
+	                }
+	               		            
+	                try {
+		                pst = con.prepareStatement("Select user_name from user where user_name=? and user_password=?");
+		                pst.setString(1, userName);
+		                pst.setString(2, password);
+		                ResultSet rs = pst.executeQuery();
+		                if (rs.next()) {
+	                        dispose();
+	                        UserHome ah = new UserHome(userName);
+	                        ah.setTitle("Welcome");
+	                        ah.setVisible(true);
+	                        JOptionPane.showMessageDialog(null, "You have successfully logged in", "Login Success", JOptionPane.INFORMATION_MESSAGE);
+	                    } else {
+	                        JOptionPane.showMessageDialog(null, "Wrong Username or Password", "Login Error", JOptionPane.ERROR_MESSAGE);
+	                    }
+	                }
+	                catch (SQLException e1)
+	                {
+	                	e1.printStackTrace();
+	                }
+
+	        
+
+	                }
+	     });
+        contentPane.add(LoginButton);
+        
+        panel = new JPanel();
+        panel.setBounds(0, 0, 450, 70);
+        panel.setBackground(new Color(73, 146, 186));
+        contentPane.add(panel);
     }
-}
-class MoneyDrawing extends JPanel {
-
-	  @Override
-	  public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    setBackground(Color.YELLOW);
-
-	    g.setColor(Color.BLACK);
-	    g.drawRect(75, 50, 100, 100);
-	    g.fillRect(75, 50, 100, 100);
-
-	    g.setColor(Color.RED);
-	    g.drawOval(75, 50, 100, 100);
-	    g.fillOval(75, 50, 100, 100);
-
-	    g.setColor(Color.WHITE);
-	    g.drawString("$", 100, 90);
-	}
 }
