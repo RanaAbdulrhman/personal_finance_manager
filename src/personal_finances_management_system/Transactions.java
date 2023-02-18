@@ -43,12 +43,14 @@ public class Transactions {
 	private JComboBox category_field;
 	private JTextField amount_field;
 	private JFormattedTextField date_field;
+	int user_balance;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
 				try {
 					Transactions window = new Transactions("Rana");
@@ -71,6 +73,7 @@ public class Transactions {
 		initialize(userSes);
 		Connect();
 		table_load(userSes);
+		changeBalance(1000,1,"Rana");
 	}
 
 	
@@ -93,6 +96,45 @@ public class Transactions {
 	            ex.printStackTrace();
 	        }
 	 
+	}
+	public boolean changeBalance(int amount,int type, String userSes) {
+		// Get the balance
+        try {
+			pst = con.prepareStatement("Select user_balance from user where user_name=?");
+            pst.setString(1, userSes);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+            	System.out.println(rs.getString("user_balance"));
+            	user_balance = Integer.parseInt(rs.getString("user_balance"));		
+            }
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+        // get the updated balance
+        if(type == 0) {
+        	user_balance= user_balance + amount;
+        }else if(type == 1){
+        	if(user_balance-amount >= 0) {   
+            	user_balance= user_balance-amount;
+    	        // update the balance
+        	}else {
+            	return false; 
+            }
+       }
+        
+        // update
+        try {
+            pst = con.prepareStatement("update user set user_balance= ? where user_name= ?");
+            pst.setInt(1,user_balance);
+            pst.setString(2,userSes);
+            pst.executeUpdate();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        return true; 
+        	
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -130,28 +172,40 @@ public class Transactions {
 	}
 	private void initialize(String userSes) {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(26, 66, 116));
-		frame.setBounds(100, 100, 550, 300);
+		frame.getContentPane().setBackground(new Color(30, 22, 99));
+		frame.setBounds(100, 100, 650, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(73, 146, 186));
-		panel.setBounds(0, 0, 550, 55);
+		panel.setBackground(new Color(30, 22, 143));
+		panel.setBounds(0, 0, 664, 57);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("MANAGE TRANSACTIONS ");
+		JLabel lblNewLabel = new JLabel("Manage Transactions");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
+		lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 16));
 		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(134, 17, 273, 16);
+		lblNewLabel.setBounds(200, 17, 273, 16);
 		panel.add(lblNewLabel);
 		
 		JButton logout_button = new JButton("Logout");
-		logout_button.setBounds(469, 13, 75, 29);
+		logout_button.setBounds(550, 13, 75, 29);
 		panel.add(logout_button);
+		
+		JButton backButton = new JButton("<");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+                UserHome ah = new UserHome(userSes);
+                ah.setTitle("Welcome");
+                ah.setVisible(true);
+			}
+		});
+		backButton.setBounds(19, 13, 75, 29);
+		panel.add(backButton);
 		logout_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int a = JOptionPane.showConfirmDialog(logout_button, "Are you sure?");
@@ -168,14 +222,14 @@ public class Transactions {
 
 		
 		JLabel lblNewLabel_1 = new JLabel("Title");
-		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(10, 73, 33, 16);
+		lblNewLabel_1.setBounds(6, 108, 33, 16);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		title_field = new JTextField();
 		title_field.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		title_field.setBounds(55, 73, 106, 26);
+		title_field.setBounds(86, 105, 106, 26);
 		frame.getContentPane().add(title_field);
 		title_field.setColumns(10);
 		ArrayList<String> items= new ArrayList<String>();
@@ -198,30 +252,30 @@ public class Transactions {
 
 
 		category_field = new JComboBox(items.toArray());
-		category_field.setBounds(55, 111, 112, 23);
+		category_field.setBounds(86, 155, 112, 23);
 		frame.getContentPane().add(category_field);
 		
 		JLabel category_label = new JLabel("Category");
-		category_label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		category_label.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		category_label.setForeground(Color.WHITE);
-		category_label.setBounds(10, 111, 49, 16);
+		category_label.setBounds(6, 157, 79, 16);
 		frame.getContentPane().add(category_label);
 		
 		JLabel lblNewLabel_1_2 = new JLabel("Amount");
-		lblNewLabel_1_2.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblNewLabel_1_2.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_1_2.setForeground(Color.WHITE);
-		lblNewLabel_1_2.setBounds(10, 152, 49, 16);
+		lblNewLabel_1_2.setBounds(10, 200, 49, 16);
 		frame.getContentPane().add(lblNewLabel_1_2);
 		
 		amount_field = new JTextField();
 		amount_field.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		amount_field.setColumns(10);
-		amount_field.setBounds(55, 146, 106, 26);
+		amount_field.setBounds(86, 197, 106, 26);
 		frame.getContentPane().add(amount_field);
 		
 		JFormattedTextField date_field = new JFormattedTextField();
 		date_field.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		date_field.setBounds(55, 180, 106, 26);
+		date_field.setBounds(86, 245, 106, 26);
     	date_field.setText("dd/MM/yyyy");
 		frame.getContentPane().add(date_field);
 
@@ -243,9 +297,9 @@ public class Transactions {
 		});
 		
 		JLabel lblNewLabel_1_2_1 = new JLabel("Date");
-		lblNewLabel_1_2_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblNewLabel_1_2_1.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_1_2_1.setForeground(Color.WHITE);
-		lblNewLabel_1_2_1.setBounds(10, 184, 33, 16);
+		lblNewLabel_1_2_1.setBounds(10, 248, 33, 16);
 		frame.getContentPane().add(lblNewLabel_1_2_1);
 		
 
@@ -281,26 +335,45 @@ public class Transactions {
 					JOptionPane.showMessageDialog(null, "Transaction Failed!","Fail",JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				 }
+				
+				// Get the category type
+				int category_type=2;
+				try {
+					pst = con.prepareStatement("select type from user join Catergory on user.user_name = Catergory.user_name where category_name=?");
+					pst.setString(1, category);
+					ResultSet rs = pst.executeQuery();
+					if (rs.next()) {
+						System.out.println(rs.getString("type"));
+	                	category_type = Integer.parseInt(rs.getString("type"));		
+	                }
+				} catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				int int_amount = Integer.parseInt(amount);
+				if(!changeBalance(int_amount, category_type, userSes)) {
+					JOptionPane.showMessageDialog(null, "There's not enough credit!","Fail",JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
-		save_button.setBounds(10, 229, 49, 29);
+		save_button.setBounds(10, 306, 68, 29);
 		frame.getContentPane().add(save_button);
 		
 		Button update_button = new Button("Update");
 
 
 		update_button.setFont(new Font("Dialog", Font.PLAIN, 10));
-		update_button.setBounds(55, 229, 68, 29);
+		update_button.setBounds(71, 306, 68, 29);
 		frame.getContentPane().add(update_button);
 		
 		Button delete_button = new Button("Delete");
 
 		delete_button.setFont(new Font("Dialog", Font.PLAIN, 10));
-		delete_button.setBounds(116, 229, 61, 29);
+		delete_button.setBounds(142, 306, 61, 29);
 		frame.getContentPane().add(delete_button);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(173, 67, 359, 155);
+		scrollPane.setBounds(215, 69, 429, 297);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();

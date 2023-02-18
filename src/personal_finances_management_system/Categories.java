@@ -131,28 +131,42 @@ public class Categories {
 	}
 	private void initialize(String userSes) {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(26, 66, 116));
-		frame.setBounds(100, 100, 550, 300);
+		frame.getContentPane().setBackground(new Color(30, 22, 99));
+		frame.setBounds(100, 100, 650, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(73, 146, 186));
-		panel.setBounds(0, 0, 550, 55);
+		panel.setBackground(new Color(30, 22, 143));
+		panel.setBounds(0, 0, 661, 55);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("MANAGE CATEGORIES ");
+		JLabel lblNewLabel = new JLabel("Manage Categories ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
 		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(95, 17, 273, 16);
+		lblNewLabel.setBounds(176, 17, 273, 16);
 		panel.add(lblNewLabel);
 		
 		JButton logout_button = new JButton("Logout");
-		logout_button.setBounds(383, 13, 75, 29);
+		logout_button.setBounds(555, 13, 75, 29);
 		panel.add(logout_button);
+		
+		JButton backButton = new JButton("<");
+		backButton.setBounds(18, 13, 75, 29);
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+                UserHome ah = new UserHome(userSes);
+                ah.setTitle("Welcome");
+                ah.setVisible(true);
+			}
+		});
+		panel.add(backButton);
+		
+		
 		logout_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int a = JOptionPane.showConfirmDialog(logout_button, "Are you sure?");
@@ -167,14 +181,14 @@ public class Categories {
         });
 		
 		JLabel lblNewLabel_1 = new JLabel("Category name");
-		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(10, 77, 92, 16);
+		lblNewLabel_1.setBounds(10, 119, 92, 16);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		catergory_name_field = new JTextField();
 		catergory_name_field.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
-		catergory_name_field.setBounds(105, 73, 106, 26);
+		catergory_name_field.setBounds(120, 115, 106, 26);
 		frame.getContentPane().add(catergory_name_field);
 		catergory_name_field.setColumns(10);
 		
@@ -182,9 +196,9 @@ public class Categories {
 		String [] items = { "Food", "Health Care", "Rent", "Entertainment" };
 		
 		JLabel category_label = new JLabel("Type");
-		category_label.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
+		category_label.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		category_label.setForeground(Color.WHITE);
-		category_label.setBounds(14, 105, 31, 16);
+		category_label.setBounds(10, 172, 31, 16);
 		frame.getContentPane().add(category_label);
 		
 
@@ -221,17 +235,17 @@ public class Categories {
 				 }
 			}
 		});
-		save_button.setBounds(10, 186, 75, 29);
+		save_button.setBounds(10, 305, 75, 29);
 		frame.getContentPane().add(save_button);
 		
 		Button delete_button = new Button("Delete");
 
 		delete_button.setFont(new Font("Dialog", Font.PLAIN, 10));
-		delete_button.setBounds(91, 186, 75, 29);
+		delete_button.setBounds(91, 305, 75, 29);
 		frame.getContentPane().add(delete_button);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(223, 67, 233, 155);
+		scrollPane.setBounds(247, 67, 397, 299);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -251,13 +265,13 @@ public class Categories {
 		JLabel category_label_1 = new JLabel("(Income/Expnse)");
 		category_label_1.setForeground(Color.WHITE);
 		category_label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 8));
-		category_label_1.setBounds(42, 106, 68, 16);
+		category_label_1.setBounds(42, 174, 68, 16);
 		frame.getContentPane().add(category_label_1);
 		
 		type_field = new JTextField();
 		type_field.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		type_field.setColumns(10);
-		type_field.setBounds(105, 101, 106, 26);
+		type_field.setBounds(120, 168, 106, 26);
 		frame.getContentPane().add(type_field);
 		
 		delete_button.addActionListener(new ActionListener() {
@@ -292,14 +306,4 @@ public class Categories {
 		frame.setVisible(true);
 		
 	}
-	private void jTable1MouseClicked(java.awt.event.MouseEvent evt){
-//		System.out.print("row clicked");
-//		DefaultTableModel model = (DefaultTableModel) table.getModel();
-//		int selectedIndex = table.getSelectedRow();
-//		catergory_name_field.setText(model.getValueAt(selectedIndex, 2).toString());
-//		category_field.setSelectedItem(model.getValueAt(selectedIndex, 3));
-//		amount_field.setText(model.getValueAt(selectedIndex, 4).toString());
-//		date_field.setText(model.getValueAt(selectedIndex, 5).toString());
-	}
-	
 }

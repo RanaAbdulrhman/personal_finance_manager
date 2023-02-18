@@ -56,50 +56,44 @@ public class UserLogin extends JFrame {
 	
     public UserLogin() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 650, 400);
         setLocationRelativeTo(null);
         setResizable(false);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(26, 66, 116));
+        contentPane.setBackground(new Color(30, 22, 143));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        JLabel lblNewLabel = new JLabel("Login");
-        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setForeground(new Color(254, 255, 255));
-        lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
-        lblNewLabel.setBounds(158, 24, 134, 37);
-        contentPane.add(lblNewLabel);
 
         textField = new JTextField();
         textField.setFont(new Font("Tahoma", Font.PLAIN, 10));
-        textField.setBounds(178, 102, 185, 37);
+        textField.setBounds(299, 112, 185, 37);
         contentPane.add(textField);
         textField.setColumns(10);
 
         passwordField = new JPasswordField();
         passwordField.setFont(new Font("Tahoma", Font.PLAIN, 10));
-        passwordField.setBounds(178, 161, 185, 30);
+        passwordField.setBounds(299, 160, 185, 37);
         contentPane.add(passwordField);
 
         JLabel lblUsername = new JLabel("Username");
         lblUsername.setBackground(Color.BLACK);
         lblUsername.setForeground(new Color(254, 255, 255));
         lblUsername.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
-        lblUsername.setBounds(78, 102, 98, 16);
+        lblUsername.setBounds(204, 120, 98, 16);
         contentPane.add(lblUsername);
 
         JLabel lblPassword = new JLabel("Password");
         lblPassword.setForeground(new Color(254, 255, 255));
         lblPassword.setBackground(Color.CYAN);
         lblPassword.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
-        lblPassword.setBounds(78, 164, 98, 16);
+        lblPassword.setBounds(204, 164, 98, 16);
         contentPane.add(lblPassword);
         
 
         LoginButton = new JButton("Login");
         LoginButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        LoginButton.setBounds(178, 215, 106, 30);
+        LoginButton.setBounds(262, 243, 106, 30);
         
         LoginButton.addActionListener(new ActionListener() {
 	        Connection con;
@@ -151,8 +145,15 @@ public class UserLogin extends JFrame {
         contentPane.add(LoginButton);
         
         panel = new JPanel();
-        panel.setBounds(0, 0, 450, 70);
-        panel.setBackground(new Color(73, 146, 186));
+        panel.setBounds(0, 0, 650, 53);
+        panel.setBackground(new Color(30, 22, 99));
         contentPane.add(panel);
+        panel.setLayout(null);
+        JLabel lblNewLabel = new JLabel("Login");
+        lblNewLabel.setBounds(295, 23, 47, 24);
+        panel.add(lblNewLabel);
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setForeground(new Color(254, 255, 255));
+        lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 20));
     }
 }

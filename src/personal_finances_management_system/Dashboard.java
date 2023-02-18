@@ -36,7 +36,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 public class Dashboard {
 	
 	private JFrame frame;
@@ -99,31 +98,31 @@ public class Dashboard {
 
 	private void initialize(String userSes) {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(26, 66, 116));
-		frame.setBounds(100, 100, 470, 300);
+		frame.getContentPane().setBackground(new Color(30, 22, 143));
+		frame.setBounds(100, 100, 650, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(73, 146, 186));
-		panel.setBounds(0, 0, 550, 55);
+		panel.setBackground(new Color(30, 22, 99));
+		panel.setBounds(0, -19, 667, 74);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("DASHBOARD");
+		JLabel lblNewLabel = new JLabel("Dashboard");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("SF Pro Display", Font.PLAIN, 15));
 		lblNewLabel.setForeground(new Color(255, 255, 255));
-		lblNewLabel.setBounds(95, 17, 273, 16);
+		lblNewLabel.setBounds(186, 32, 273, 16);
 		panel.add(lblNewLabel);
 		
 		JButton logout_button = new JButton("Logout");
-		logout_button.setBounds(383, 13, 75, 29);
+		logout_button.setBounds(559, 28, 75, 29);
 		panel.add(logout_button);
 		
-		JButton backButton = new JButton("Back");
-		backButton.setBounds(18, 13, 75, 29);
+		JButton backButton = new JButton("<");
+		backButton.setBounds(8, 28, 75, 29);
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
